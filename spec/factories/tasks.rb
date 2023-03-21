@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :task do
-    title { "MyString" }
-    description { "MyText" }
-    due_date { "2023-03-19 14:21:38" }
+    title { Faker::Name.name }
+    description { Faker::Lorem.sentence }
+    due_date { Time.zone.now }
     completed { false }
   end
 end
