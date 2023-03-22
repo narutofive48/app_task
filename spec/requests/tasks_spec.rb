@@ -2,15 +2,20 @@ require 'rails_helper'
 
 RSpec.describe "Tasks", type: :request do
 
-  describe "GET /index" do
-    it "renders a successful response" do
-      Task.create! valid_attributes
-      get tasks_url, headers: valid_headers, as: :json
-      expect(response).to be_successful
+  describe "GET /tasks" do
+    subject { get(tasks_path) }
+    before { create_list(:task, 3)}
+    it "タスクの一覧を取得できる" do
+      subject
+      res=JSON.parse(response.body)
+      expect(res.length).to eq 3
+      expect(res[0].keys).to eq ["title", "description", "due_date", "completed"]
+      expect(response).to have_http_status(200)
     end
   end
 
   describe "GET /show" do
+    subject{ get(task_path(task_id))}
     it "renders a successful response" do
       task = Task.create! valid_attributes
       get task_url(task), as: :json
