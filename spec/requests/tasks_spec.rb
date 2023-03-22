@@ -15,7 +15,7 @@ RSpec.describe "Tasks", type: :request do
   end
 
   describe "GET /show" do
-    subject{ get(task_path(task_id))}
+    subject{ get(task_path(:id))}
     it "renders a successful response" do
       task = Task.create! valid_attributes
       get task_url(task), as: :json
