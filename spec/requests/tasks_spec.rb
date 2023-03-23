@@ -24,11 +24,11 @@ RSpec.describe "Tasks", type: :request do
       it "指定したタスクが取得できる" do
         subject
         res = JSON.parse(response.body)
-        expect(response).to have_http_status(200)
         expect(res["title"]).to eq task.title
         expect(res["description"]).to eq task.description
         expect(res["due_date"]).to eq task.due_date
         expect(res["completed"]).to eq task.completed
+        expect(response).to have_http_status(200)
       end
     end
   end
