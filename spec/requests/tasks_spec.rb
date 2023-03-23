@@ -3,19 +3,21 @@ require 'rails_helper'
 RSpec.describe "Tasks", type: :request do
 
   describe "GET /tasks" do
-    subject { get(tasks_path) }
-    before { create_list(:task, 3)}
-    it "タスクの一覧を取得できる" do
-      subject
-      res=JSON.parse(response.body)
-      expect(res.length).to eq 3
-      expect(res[0].keys).to eq ["title", "description", "due_date", "completed"]
-      expect(response).to have_http_status(200)
+    context "タスクの一覧表示(index)をリクエストした時" do
+      subject { get(tasks_path) }
+      before { create_list(:task, 3)}
+      it "タスクの一覧を取得できる" do
+        subject
+        res=JSON.parse(response.body)
+        expect(res.length).to eq 3
+        expect(res[0].keys).to eq ["title", "description", "due_date", "completed"]
+        expect(response).to have_http_status(200)
+      end
     end
   end
 
   describe "GET /show" do
-    subject{ get(task_path(task_id))}
+    subject{ get(task_path(:id))}
     it "renders a successful response" do
       task = Task.create! valid_attributes
       get task_url(task), as: :json
