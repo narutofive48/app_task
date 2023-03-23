@@ -26,9 +26,15 @@ RSpec.describe "Tasks", type: :request do
         res = JSON.parse(response.body)
         expect(res["title"]).to eq task.title
         expect(res["description"]).to eq task.description
-        expect(res["due_date"]).to eq task.due_date
+        expect(res["due_date"]).to eq task.due_date.as_json(DateTime)
         expect(res["completed"]).to eq task.completed
         expect(response).to have_http_status(200)
+      end
+    end
+    context "指定したidのタスクが存在しないとき" do
+      let(:task_id){10000}
+      it "タスクが見つからない" do
+        expect {subject}.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end
