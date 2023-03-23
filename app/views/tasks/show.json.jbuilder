@@ -1,1 +1,1 @@
-json.partial! "tasks/task", task: @task
+json.extract! @task, :title, :description, :due_date, :completed
