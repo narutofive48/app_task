@@ -61,7 +61,7 @@ RSpec.describe "Tasks", type: :request do
   end
 
   describe "PATCH /tasks/:id" do
-    subject{ patch(tasks_path(task_id), params: params)}
+    subject{ patch(task_path(task_id), params: params)}
     context "指定したタスクを書き換えるとき" do
       let(:params) do
         {task:{title: "fff", created_at: 1.day.ago}}
@@ -69,7 +69,12 @@ RSpec.describe "Tasks", type: :request do
       let(:task_id){task.id}
       let(:task){create(:task)}
       it "タスクのレコードが更新できる" do
-       expect{ subject }.to change {Task.find(task.id).title}.from(task.title).to(params[:task][:title])
+       expect{ subject }.to change {
+        task.reload.title}.from(task.title).to(params[:task][:title])&
+                  not_change{ task.reload.description }&
+                  not_change{ task.reload.due_date }&
+                  not_change{ task.reload.completed }&
+                  not_change{ task.reload.created_at }
       end
     end
   end
