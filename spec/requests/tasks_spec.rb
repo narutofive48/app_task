@@ -79,12 +79,14 @@ RSpec.describe "Tasks", type: :request do
     end
   end
 
-  describe "DELETE /destroy" do
-    it "destroys the requested task" do
-      task = Task.create! valid_attributes
-      expect {
-        delete task_url(task), headers: valid_headers, as: :json
-      }.to change(Task, :count).by(-1)
+  describe "DELETE /tasks/:id" do
+    subject{ delete(task_path(task_id))}
+    context "指定したタスクを削除するとき" do
+      let(:task_id){task.id}
+      let!(:task){ create(:task) }
+      it "指定したタスクのレコードが削除される" do
+        expect { subject }.to change{Task.count}.by(-1)
+      end
     end
   end
 end
